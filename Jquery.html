@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style type="text/css">
+        div.card
+        {
+            width: 1100px;
+            height: 125px;
+            margin: 25px;
+            display: none;
+            background-color: darkgray; 
+            color: white;
+            }
+    
+        div.card:hover{
+            border: 4px solid white;
+            background-color: black;
+
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div id="loader">
+    <div style="height:75px; width:1000px; border: 1px solid black; margin-bottom: 2rem;">
+    </div>    
+    <button id="button" style="margin-left: 25px;">Load Data</button>
+    </div>
+
+    <div class="cards" id="cards"></div>
+
+    <script>
+        $("#button").on("click", function(){
+            $("#loader").hide();
+            var detail = {
+                "url": "https://jsonplaceholder.typicode.com/posts",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+            };
+
+            $.ajax(detail).done(function(sets) {
+                var card_id = $("#cards");
+                var flag = 1;
+                for(var set of sets){
+                    var id = flag;
+                    var x = `<div class="card" id="${id}">
+                                <h2>${set['title']}</h2>
+                                <p>${set['body']}</p>
+                            </div>`;
+                    $(card_id).append(x);
+                    $("#" + id).show(500 * flag);
+                    flag++;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
